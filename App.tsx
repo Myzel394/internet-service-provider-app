@@ -1,20 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import Title from "./src/widgets/Title";
+import AppBody from "./src/widgets/AppBody";
+import InformationText from "./src/widgets/InformationText";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    return (
+        <AppBody>
+            <Title title="Hi, Jenny"/>
+            <InformationText text={"+01 804 2309 8672"}/>
+        </AppBody>
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
