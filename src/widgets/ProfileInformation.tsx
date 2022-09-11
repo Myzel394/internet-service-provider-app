@@ -20,7 +20,10 @@ export default function ProfileInformation(): ReactElement {
                     <InformationText text={"+01 804 2309 8672"}/>
                 </View>
             </View>
-            <IconButton icon={<MaterialIcons name="settings" color="white" size={24}/>} onPress={() => null}/>
+            <IconButton
+                buildIcon={props => <MaterialIcons {...props} name="settings"/>}
+                onPress={() => null}
+            />
         </View>
     );
 }

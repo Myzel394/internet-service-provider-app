@@ -4,7 +4,7 @@ import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
 import {MAIN_COLOR} from "../constants/colors";
 
 export interface IconButtonProps {
-    icon: ReactElement;
+    buildIcon: (props: any) => ReactElement;
     onPress: () => void;
 
     subTitle?: string;
@@ -12,7 +12,7 @@ export interface IconButtonProps {
 }
 
 export default function IconButton({
-                                       icon, onPress, subTitle, active = false,
+                                       buildIcon, onPress, subTitle, active = false,
                                    }: IconButtonProps): ReactElement {
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
 
@@ -22,7 +22,11 @@ export default function IconButton({
                 onPress={onPress}
                 style={[baseStyles.icon, styles.icon, active && baseStyles.active]}
             >
-                {icon}
+                {buildIcon({
+                    // @ts-ignore
+                    color: styles.icon.color,
+                    size: 24,
+                })}
             </TouchableOpacity>
             {subTitle && <Text style={[baseStyles.subTitle, styles.subTitle]}>{subTitle}</Text>}
         </View>
@@ -31,7 +35,7 @@ export default function IconButton({
 
 const baseStyles = StyleSheet.create({
     icon: {
-        padding: 12,
+        padding: 16,
         borderRadius: 18,
         aspectRatio: 1,
         alignSelf: "center",
@@ -53,6 +57,7 @@ const baseStyles = StyleSheet.create({
 
 const lightStyles = StyleSheet.create({
     icon: {
+        color: "#222222",
         backgroundColor: "#CCCCCC",
     },
     subTitle: {
@@ -62,10 +67,10 @@ const lightStyles = StyleSheet.create({
 
 const darkStyles = StyleSheet.create({
     icon: {
+        color: "#FFFFFF",
         backgroundColor: "#303030",
-        color: "white"
     },
     subTitle: {
-        color: "#5A5A5A",
+        color: "#7A7A7A",
     },
 });
