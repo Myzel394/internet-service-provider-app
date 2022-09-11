@@ -11,6 +11,11 @@
     "check:format": "prettier --check .",
     "check:lint": "eslint . --ext ts --ext tsx --ext js"
   },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn run check:types && yarn run check:format && yarn run check:lint"
+    }
+  },
   "dependencies": {
     "expo": "~46.0.9",
     "expo-status-bar": "~1.4.0",
@@ -25,6 +30,7 @@
     "@types/react-native": "~0.69.1",
     "eslint": "^8.23.0",
     "eslint-plugin-react": "^7.31.8",
+    "husky": "^8.0.1",
     "prettier": "^2.7.1",
     "typescript": "~4.3.5"
   },
