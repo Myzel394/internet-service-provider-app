@@ -36,7 +36,7 @@ const baseStyles = StyleSheet.create({
     image: {
         width: 50,
         aspectRatio: 1,
-        marginRight: 12,
+        marginRight: 16,
     },
     title: {
         marginBottom: 4,

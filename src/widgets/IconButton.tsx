@@ -1,20 +1,27 @@
 import {ReactElement} from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
+import {MAIN_COLOR} from "../constants/colors";
 
 export interface IconButtonProps {
     icon: ReactElement;
     onPress: () => void;
 
     subTitle?: string;
+    active?: boolean;
 }
 
-export default function IconButton({icon, onPress, subTitle}: IconButtonProps): ReactElement {
+export default function IconButton({
+                                       icon, onPress, subTitle, active = false,
+                                   }: IconButtonProps): ReactElement {
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
 
     return (
         <View style={baseStyles.wrapper}>
-            <TouchableOpacity onPress={onPress} style={[baseStyles.icon, styles.icon]}>
+            <TouchableOpacity
+                onPress={onPress}
+                style={[baseStyles.icon, styles.icon, active && baseStyles.active]}
+            >
                 {icon}
             </TouchableOpacity>
             {subTitle && <Text style={[baseStyles.subTitle, styles.subTitle]}>{subTitle}</Text>}
@@ -29,6 +36,9 @@ const baseStyles = StyleSheet.create({
         aspectRatio: 1,
         alignSelf: "center",
         elevation: 4,
+    },
+    active: {
+        backgroundColor: MAIN_COLOR,
     },
     wrapper: {
         flexDirection: "column",
