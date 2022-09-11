@@ -14,7 +14,7 @@ export default function Title({title}: TitleProps): ReactElement {
 
 const baseStyles = StyleSheet.create({
     title: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: "500",
     },
 });

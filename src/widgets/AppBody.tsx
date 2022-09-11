@@ -38,6 +38,6 @@ const lightStyles = StyleSheet.create({
 
 const darkStyles = StyleSheet.create({
     body: {
-        backgroundColor: "#222222",
+        backgroundColor: "#1D1D1D",
     }
 });
