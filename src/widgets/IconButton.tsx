@@ -1,5 +1,5 @@
 import {ReactElement} from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
 import {MAIN_COLOR} from "../constants/colors";
 
@@ -8,26 +8,24 @@ export interface IconButtonProps {
     onPress: () => void;
 
     subTitle?: string;
-    active?: boolean;
 }
 
-export default function IconButton({
-                                       buildIcon, onPress, subTitle, active = false,
-                                   }: IconButtonProps): ReactElement {
+export default function IconButton({buildIcon, onPress, subTitle}: IconButtonProps): ReactElement {
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
 
     return (
         <View style={baseStyles.wrapper}>
-            <TouchableOpacity
+            <TouchableHighlight
+                underlayColor={baseStyles.active.backgroundColor}
                 onPress={onPress}
-                style={[baseStyles.icon, styles.icon, active && baseStyles.active]}
+                style={[baseStyles.icon, styles.icon]}
             >
                 {buildIcon({
                     // @ts-ignore
                     color: styles.icon.color,
                     size: 24,
                 })}
-            </TouchableOpacity>
+            </TouchableHighlight>
             {subTitle && <Text style={[baseStyles.subTitle, styles.subTitle]}>{subTitle}</Text>}
         </View>
     );
