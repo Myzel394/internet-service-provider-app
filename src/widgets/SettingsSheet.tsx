@@ -6,7 +6,7 @@ import useSelectThemeStylesheet from "../hooks/use-select-theme-stylesheet";
 import Title from "./Title";
 import SheetButton from "./SheetButton";
 
-const SNAP_POINTS = ["50%"];
+const SNAP_POINTS = ["45%"];
 
 export default function SettingsSheet(): ReactElement {
     const bottomSheetRef = useRef<BottomSheet>(null);
