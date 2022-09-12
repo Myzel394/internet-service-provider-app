@@ -6,6 +6,7 @@ import QuickSelections from "./src/widgets/QuickSelections";
 import BottomSheet from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 import {useRef} from "react";
+import SettingsSheet from "./src/widgets/SettingsSheet";
 
 export default function App() {
     const bottomSheetRef = useRef<BottomSheet>(null);
@@ -16,13 +17,7 @@ export default function App() {
                 <View style={{height: 40}}/>
                 <ProfileInformation/>
                 <QuickSelections/>
-                <BottomSheet
-                    ref={bottomSheetRef}
-                    snapPoints={["25%"]}
-                    index={0}
-                >
-                    <View style={{backgroundColor: "red", flex: 1}}/>
-                </BottomSheet>
+                <SettingsSheet />
             </AppBody>
         </GestureHandlerRootView>
     );
