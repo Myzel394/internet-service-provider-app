@@ -5,24 +5,13 @@ import {MaterialCommunityIcons, Ionicons, SimpleLineIcons} from "@expo/vector-ic
 import useSelectThemeStylesheet from "../hooks/use-select-theme-stylesheet";
 import Title from "./Title";
 import SheetButton from "./SheetButton";
+import ModalSheet from "./ModalSheet";
 
 const SNAP_POINTS = ["45%"];
 
 export default function SettingsSheet(): ReactElement {
-    const bottomSheetRef = useRef<BottomSheet>(null);
-
-    const styles = useSelectThemeStylesheet(lightStyles, darkStyles);
-
     return (
-        <BottomSheet
-            ref={bottomSheetRef}
-            snapPoints={SNAP_POINTS}
-            index={0}
-            handleStyle={[baseStyles.handleWrapper, styles.container]}
-            backgroundComponent={null}
-            handleIndicatorStyle={[baseStyles.handle, styles.handle]}
-        >
-            <View style={[baseStyles.container, styles.container]}>
+        <ModalSheet snapPoints={SNAP_POINTS}>
             <Title title="Useful" />
             <View style={{height: 16}} />
             <SheetButton
@@ -45,43 +34,6 @@ export default function SettingsSheet(): ReactElement {
                 title="Autopayments"
                 onPress={() => null}
             />
-            </View>
-        </BottomSheet>
-    );
+        </ModalSheet>
+    )
 }
-
-const baseStyles = StyleSheet.create({
-    handleWrapper: {
-        borderTopLeftRadius: 32,
-        borderTopRightRadius: 32,
-    },
-    container: {
-        flex: 1,
-        padding: 16,
-    },
-    handle: {
-        width: 40,
-        height: 8,
-        alignSelf: "center",
-        borderRadius: 4,
-        marginVertical: 12,
-    },
-});
-
-const lightStyles = StyleSheet.create({
-    container: {
-        backgroundColor: "#EAEAEA",
-    },
-    handle: {
-        backgroundColor: "#FFFFFF",
-    }
-});
-
-const darkStyles = StyleSheet.create({
-    container: {
-        backgroundColor: "#303030",
-    },
-    handle: {
-        backgroundColor: "#585858",
-    }
-});

@@ -3,7 +3,7 @@ import {StyleSheet, View} from "react-native";
 import IconButton from "./IconButton";
 import {AntDesign, FontAwesome5, MaterialIcons} from "@expo/vector-icons";
 
-export default function QuickSelections(): ReactElement {
+export default function QuickSelections({onFunSectionPress}: any): ReactElement {
     return (
         <View style={baseStyles.container}>
             <View style={baseStyles.item}>
@@ -11,7 +11,6 @@ export default function QuickSelections(): ReactElement {
                     buildIcon={props => <MaterialIcons {...props} name="wifi"/>}
                     subTitle="Internet"
                     onPress={() => null}
-                    active
                 />
             </View>
             <View style={baseStyles.item}>
@@ -25,7 +24,7 @@ export default function QuickSelections(): ReactElement {
                 <IconButton
                     buildIcon={props => <AntDesign {...props} name="play"/>}
                     subTitle="Fun"
-                    onPress={() => null}
+                    onPress={onFunSectionPress}
                 />
             </View>
             <View style={baseStyles.item}>
