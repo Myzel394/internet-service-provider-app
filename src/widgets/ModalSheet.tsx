@@ -1,4 +1,4 @@
-import BottomSheet, { BottomSheetProps } from "@gorhom/bottom-sheet";
+import BottomSheet, {BottomSheetProps} from "@gorhom/bottom-sheet";
 import React, {ReactElement, ReactNode} from "react";
 import {StyleSheet, View} from "react-native";
 import useSelectThemeStylesheet from "../hooks/use-select-theme-stylesheet";
@@ -8,10 +8,10 @@ export interface ModalSheetProps extends Omit<BottomSheetProps, "handleStyle" | 
 }
 
 export default function ModalSheet({
-children,
-backgroundComponent = null,
-...props
-}: ModalSheetProps): ReactElement {
+                                       children,
+                                       backgroundComponent = null,
+                                       ...props
+                                   }: ModalSheetProps): ReactElement {
     const styles = useSelectThemeStylesheet(lightStyles, darkStyles);
 
     return (
@@ -35,7 +35,7 @@ const baseStyles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        padding: 16,
+        width: "100%",
     },
     handle: {
         width: 40,
