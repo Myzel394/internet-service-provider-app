@@ -44,7 +44,8 @@ export default function SheetButton({buildIcon, title, onPress}: SheetButtonProp
 const baseStyles = StyleSheet.create({
     wrapper: {
         borderRadius: 24,
-        padding: 16,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
     },
     container: {
         flexDirection: "row",
@@ -61,8 +62,8 @@ const baseStyles = StyleSheet.create({
     },
     actionIcon: {
         borderWidth: 1,
-        borderRadius: 22,
-        width: 44,
+        borderRadius: 15,
+        width: 30,
         aspectRatio: 1,
         flexDirection: "row",
         justifyContent: "center",
