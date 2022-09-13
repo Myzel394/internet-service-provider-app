@@ -1,6 +1,6 @@
-import { LinearGradient } from "expo-linear-gradient";
+import {LinearGradient} from "expo-linear-gradient";
 import React from "react";
-import {StyleSheet, View, Text} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 
 export default function BalanceCard() {
     return (
@@ -47,7 +47,7 @@ export default function BalanceCard() {
 const baseStyles = StyleSheet.create({
     wrapper: {
         width: "100%",
-        height: 200,
+        height: 150,
         position: "relative",
         justifyContent: "center",
         alignItems: "center",

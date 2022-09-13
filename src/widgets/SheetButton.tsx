@@ -1,5 +1,5 @@
 import {ReactElement} from "react";
-import {View, Text, StyleSheet, TouchableHighlight} from "react-native";
+import {StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import useSelectThemeStylesheet from "../hooks/use-select-theme-stylesheet";
 
@@ -24,14 +24,14 @@ export default function SheetButton({buildIcon, title, onPress}: SheetButtonProp
                     {buildIcon({
                         // @ts-ignore
                         color: styles.icon.color,
-                        size: 30,
+                        size: 20,
                     })}
                     <Text style={[baseStyles.title, styles.title]}>{title}</Text>
                 </View>
                 <View style={[baseStyles.actionIcon, styles.actionIcon]}>
                     <Ionicons
                         name="chevron-forward"
-                        size={30}
+                        size={20}
                         // @ts-ignore
                         color={styles.title.color}
                     />
@@ -52,7 +52,7 @@ const baseStyles = StyleSheet.create({
         alignItems: "center",
     },
     title: {
-        fontSize: 20,
+        fontSize: 16,
         marginLeft: 16,
     },
     information: {
