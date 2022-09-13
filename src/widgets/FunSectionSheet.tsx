@@ -1,7 +1,9 @@
 import BlurView from "expo-blur/build/BlurView";
 import React, {ReactElement} from "react";
-import {Text} from "react-native";
 import ModalSheet from "./ModalSheet";
+import Title from "./Title";
+import {StyleSheet, View} from "react-native";
+import SecondaryText from "./SecondaryText";
 
 export interface FunSelectionSheetProps {
     onClose: () => void;
@@ -26,7 +28,17 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
             onClose={onClose}
             enablePanDownToClose
         >
-            <Text>Test</Text>
+            <View style={baseStyles.wrapper}>
+                <Title title="Information"/>
+                <SecondaryText
+                    text="A package for those of you who like to play social media. It also includes a special gift from us, so what are you wa..."/>
+            </View>
         </ModalSheet>
     )
 }
+
+const baseStyles = StyleSheet.create({
+    wrapper: {
+        padding: 16,
+    }
+});
