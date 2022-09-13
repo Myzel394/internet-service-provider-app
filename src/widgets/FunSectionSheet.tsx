@@ -7,6 +7,7 @@ import SecondaryText from "./SecondaryText";
 import {LineChart} from "react-native-chart-kit";
 import {MAIN_COLOR} from "../constants/colors";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
+import RemainingVolume from "./RemainingVolume";
 
 export interface FunSelectionSheetProps {
     onClose: () => void;
@@ -34,6 +35,7 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
             enablePanDownToClose
         >
             <View style={baseStyles.wrapper}>
+                <RemainingVolume/>
                 <Title title="Information"/>
                 <SecondaryText
                     text="A package for those of you who like to play social media. It also includes a special gift from us, so what are you wa..."/>
