@@ -63,7 +63,7 @@ export default function MovingVolumeIndicator(): ReactElement {
 
     const scaleGestureHandler = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
         onStart: () => {
-            scale.value = withTiming(.9, {
+            scale.value = withTiming(.96, {
                 duration: 100,
             });
         },
