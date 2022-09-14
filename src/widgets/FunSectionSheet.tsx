@@ -1,5 +1,5 @@
 import BlurView from "expo-blur/build/BlurView";
-import React, {ReactElement} from "react";
+import React, {ReactElement, useEffect, useState} from "react";
 import ModalSheet from "./ModalSheet";
 import Title from "./Title";
 import {Dimensions, StyleSheet, View} from "react-native";
@@ -10,6 +10,8 @@ import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
 import RemainingVolume from "./RemainingVolume";
 import PriceText from "./PriceText";
 import BuyButton from "./BuyButton";
+import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
+import {useBottomSheetTimingConfigs} from "@gorhom/bottom-sheet";
 
 export interface FunSelectionSheetProps {
     onClose: () => void;
@@ -18,12 +20,49 @@ export interface FunSelectionSheetProps {
 }
 
 const SNAP_POINTS = ["80%"];
+const {width: DIMENSION_WIDTH} = Dimensions.get("window");
 
 export default function FunSectionSheet({visible, onClose}: FunSelectionSheetProps): ReactElement {
+    const [isOpening, setIsOpening] = useState<boolean>(false);
+
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
+    const animationConfigs = useBottomSheetTimingConfigs(isOpening ? {
+        duration: 800,
+        easing: Easing.bezierFn(.19, .77, .13, .95),
+    } : {
+        duration: 150,
+    });
+
+    const translationX = useSharedValue<number>(-DIMENSION_WIDTH);
+    const moveInStyle = useAnimatedStyle(() => ({
+        transform: [
+            {
+                translateX: translationX.value,
+            },
+        ],
+    }));
+
+    useEffect(() => {
+        if (visible) {
+            translationX.value = withTiming(0, {
+                duration: 1200,
+                easing: Easing.bezierFn(.19, .77, .13, .95),
+            });
+        } else {
+            translationX.value = -DIMENSION_WIDTH;
+        }
+    }, [visible]);
 
     return (
         <ModalSheet
+            animationConfigs={animationConfigs}
+            onAnimate={(_, toIndex) => {
+                if (toIndex == 0) {
+                    setIsOpening(true);
+                } else {
+                    setIsOpening(false);
+                }
+            }}
             snapPoints={SNAP_POINTS}
             index={visible ? 0 : -1}
             backdropComponent={() =>
@@ -38,7 +77,9 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
         >
             <View style={baseStyles.wrapper}>
                 <View style={baseStyles.content}>
-                    <RemainingVolume/>
+                    <Animated.View style={moveInStyle}>
+                        <RemainingVolume/>
+                    </Animated.View>
                     <View style={baseStyles.information}>
                         <Title title="Information"/>
                         <SecondaryText
