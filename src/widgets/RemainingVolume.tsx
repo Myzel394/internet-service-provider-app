@@ -1,16 +1,18 @@
 import {ReactElement} from "react";
 import {StyleSheet, Text, View} from "react-native";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
+import {MAIN_COLOR} from "../constants/colors";
+import MovingVolumeIndicator from "./MovingVolumeIndicator";
 
 export default function RemainingVolume(): ReactElement {
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
 
     return (
         <View style={[baseStyles.wrapper, styles.wrapper]}>
-            <View>
-
+            <View style={baseStyles.movingWrapper}>
+                <MovingVolumeIndicator/>
             </View>
-            <View>
+            <View style={baseStyles.information}>
                 <Text style={[baseStyles.caption, styles.caption]}>
                     Jun 2022
                 </Text>
@@ -53,6 +55,20 @@ const baseStyles = StyleSheet.create({
     },
     subTitle: {
         fontSize: 14,
+    },
+    movingWrapper: {
+        justifyContent: "center",
+        alignItems: "center",
+        flexGrow: 2,
+    },
+    movingIndicator: {
+        width: 60,
+        aspectRatio: 1,
+        borderRadius: 12,
+        backgroundColor: MAIN_COLOR,
+    },
+    information: {
+        flexGrow: 3,
     },
 });
 
