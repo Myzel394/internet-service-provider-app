@@ -8,6 +8,8 @@ import {LineChart} from "react-native-chart-kit";
 import {MAIN_COLOR} from "../constants/colors";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
 import RemainingVolume from "./RemainingVolume";
+import PriceText from "./PriceText";
+import BuyButton from "./BuyButton";
 
 export interface FunSelectionSheetProps {
     onClose: () => void;
@@ -78,6 +80,12 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
                 transparent
                 bezier
             />
+            <View style={[baseStyles.wrapper, baseStyles.actions]}>
+                <PriceText/>
+                <View style={baseStyles.buyButton}>
+                    <BuyButton/>
+                </View>
+            </View>
         </ModalSheet>
     )
 }
@@ -85,6 +93,14 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
 const baseStyles = StyleSheet.create({
     wrapper: {
         padding: 16,
+    },
+    actions: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    buyButton: {
+        flex: 1,
+        marginLeft: 20,
     }
 });
 
