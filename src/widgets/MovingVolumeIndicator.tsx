@@ -15,6 +15,8 @@ import Animated, {
     withTiming
 } from "react-native-reanimated";
 import {MAIN_COLOR} from "../constants/colors";
+import {AntDesign} from "@expo/vector-icons";
+import {SquircleView} from "react-native-figma-squircle";
 
 enum Direction {
     HORIZONTAL,
@@ -106,25 +108,38 @@ export default function MovingVolumeIndicator(): ReactElement {
             <Animated.View>
                 <PanGestureHandler onGestureEvent={panGestureHandler}>
                     <Animated.View
-                        style={[baseStyles.wrapper, animatedStyles]}
+                        style={animatedStyles}
                         onLayout={event => {
                             const {x, y} = event.nativeEvent.layout;
 
                             setStartPointX(x);
                             setStartPointY(y);
                         }}
-                    />
+                    >
+                        <SquircleView
+                            squircleParams={{
+                                cornerSmoothing: .7,
+                                fillColor: MAIN_COLOR,
+                                cornerRadius: 30,
+                            }}
+                            style={baseStyles.wrapper}
+                        >
+                            <AntDesign name="play" color="#FFF" size={36}/>
+                        </SquircleView>
+                    </Animated.View>
                 </PanGestureHandler>
             </Animated.View>
+
         </TapGestureHandler>
     );
 }
 
 const baseStyles = StyleSheet.create({
     wrapper: {
-        width: 60,
+        width: 100,
         aspectRatio: 1,
-        borderRadius: 20,
-        backgroundColor: MAIN_COLOR,
+        marginLeft: -70,
+        alignItems: "center",
+        justifyContent: "center",
     },
 });

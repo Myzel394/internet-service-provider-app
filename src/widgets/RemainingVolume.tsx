@@ -38,6 +38,8 @@ const baseStyles = StyleSheet.create({
         borderRadius: 32,
         flexDirection: "row",
         justifyContent: "space-between",
+        width: "90%",
+        alignSelf: "flex-end",
     },
     caption: {
         fontSize: 14,
