@@ -18,6 +18,8 @@ const baseStyles = StyleSheet.create({
         borderRadius: 20,
         width: "100%",
         backgroundColor: MAIN_COLOR,
+        maxWidth: 200,
+        alignSelf: "center",
     },
     text: {
         color: "#FFF",

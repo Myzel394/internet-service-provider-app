@@ -37,53 +37,57 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
             enablePanDownToClose
         >
             <View style={baseStyles.wrapper}>
-                <RemainingVolume/>
-                <Title title="Information"/>
-                <SecondaryText
-                    text="A package for those of you who like to play social media. It also includes a special gift from us, so what are you wa..."/>
-            </View>
-            <LineChart
-                style={{margin: 0, padding: 0, width: "100%"}}
-                data={{
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                    datasets: [
-                        {
-                            data: [
-                                Math.random() * 100,
-                                Math.random() * 100,
-                                Math.random() * 100,
-                                Math.random() * 100,
-                                Math.random() * 100,
-                                Math.random() * 100,
-                            ]
-                        }
-                    ]
-                }}
-                width={Dimensions.get("window").width * 1.5}
-                height={200}
-                chartConfig={{
-                    color: (_) => MAIN_COLOR,
-                    fillShadowGradientFrom: MAIN_COLOR,
-                    fillShadowGradientTo: MAIN_COLOR,
-                    fillShadowGradientToOpacity: 0,
-                    fillShadowGradientOpacity: .2,
-                    labelColor: _ => (styles.chart as any).color as string,
-                    strokeWidth: 2,
-                }}
-                yLabelsOffset={0}
-                yAxisLabel=""
-                formatYLabel={() => ""}
-                withDots={false}
-                withHorizontalLabels={false}
-                withOuterLines={false}
-                withInnerLines={false}
-                transparent
-                bezier
-            />
-            <View style={[baseStyles.wrapper, baseStyles.actions]}>
-                <PriceText/>
-                <View style={baseStyles.buyButton}>
-                    <BuyButton/>
+                <View style={baseStyles.content}>
+                    <RemainingVolume/>
+                    <View style={baseStyles.information}>
+                        <Title title="Information"/>
+                        <SecondaryText
+                            text="A package for those of you who like to play social media. It also includes a special gift from us, so what are you wa..."/>
+                    </View>
+                </View>
+                <LineChart
+                    style={{margin: 0, padding: 0, width: "100%"}}
+                    data={{
+                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                        datasets: [
+                            {
+                                data: [
+                                    Math.random() * 100,
+                                    Math.random() * 100,
+                                    Math.random() * 100,
+                                    Math.random() * 100,
+                                    Math.random() * 100,
+                                    Math.random() * 100,
+                                ]
+                            }
+                        ]
+                    }}
+                    width={Dimensions.get("window").width * 1.5}
+                    height={200}
+                    chartConfig={{
+                        color: (_) => MAIN_COLOR,
+                        fillShadowGradientFrom: MAIN_COLOR,
+                        fillShadowGradientTo: MAIN_COLOR,
+                        fillShadowGradientToOpacity: 0,
+                        fillShadowGradientOpacity: .2,
+                        labelColor: _ => (styles.chart as any).color as string,
+                        strokeWidth: 2,
+                    }}
+                    yLabelsOffset={0}
+                    yAxisLabel=""
+                    formatYLabel={() => ""}
+                    withDots={false}
+                    withHorizontalLabels={false}
+                    withOuterLines={false}
+                    withInnerLines={false}
+                    transparent
+                    bezier
+                />
+                <View style={[baseStyles.content, baseStyles.actions]}>
+                    <PriceText/>
+                    <View style={baseStyles.buyButton}>
+                        <BuyButton/>
+                    </View>
                 </View>
             </View>
         </ModalSheet>
@@ -92,15 +96,23 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
 
 const baseStyles = StyleSheet.create({
     wrapper: {
-        padding: 16,
+        flex: 1,
+        justifyContent: "space-between",
+    },
+    content: {
+        paddingHorizontal: 16,
     },
     actions: {
         flexDirection: "row",
         alignItems: "center",
+        marginBottom: 8,
     },
     buyButton: {
         flex: 1,
         marginLeft: 20,
+    },
+    information: {
+        marginTop: 16,
     }
 });
 
