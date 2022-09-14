@@ -6,7 +6,7 @@ import QuickSelections from "./src/widgets/QuickSelections";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 import SettingsSheet from "./src/widgets/SettingsSheet";
 import BalanceCard from "./src/widgets/BalanceCard";
-import { useState } from 'react';
+import {useState} from 'react';
 import FunSectionSheet from "./src/widgets/FunSectionSheet";
 
 export default function App() {
@@ -16,16 +16,14 @@ export default function App() {
         <GestureHandlerRootView>
             <AppBody>
                 <View style={{height: 40}}/>
-                <View style={{width: "90%", alignSelf: "center"}}>
-                    <ProfileInformation/>
-                </View>
+                <ProfileInformation/>
                 <View style={{width: "80%", alignSelf: "center", marginVertical: 32}}>
                     <BalanceCard/>
                 </View>
-                <QuickSelections onFunSectionPress={() => setShowFunSheet(true)} />
-                <SettingsSheet />
+                <QuickSelections onFunSectionPress={() => setShowFunSheet(true)}/>
+                <SettingsSheet/>
             </AppBody>
-            <FunSectionSheet visible={showFunSheet} onClose={() => setShowFunSheet(false)} />
+            <FunSectionSheet visible={showFunSheet} onClose={() => setShowFunSheet(false)}/>
         </GestureHandlerRootView>
     );
 }

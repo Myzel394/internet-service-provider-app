@@ -27,7 +27,7 @@ export default function QuickSelections({onFunSectionPress}: any): ReactElement 
                     onPress={onFunSectionPress}
                 />
             </View>
-            <View style={baseStyles.item}>
+            <View>
                 <IconButton
                     buildIcon={props => <MaterialIcons {...props} name="widgets"/>}
                     subTitle="More"
@@ -44,6 +44,6 @@ const baseStyles = StyleSheet.create({
     },
     item: {
         flex: 1,
-        paddingHorizontal: 16,
+        marginRight: 16,
     },
 });
