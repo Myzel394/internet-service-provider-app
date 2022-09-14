@@ -1,7 +1,19 @@
 import {ReactElement, useState} from "react";
 import {Dimensions, StyleSheet} from "react-native";
-import {Gesture, GestureDetector} from "react-native-gesture-handler";
-import Animated, {Easing, useAnimatedStyle, useSharedValue, withSpring} from "react-native-reanimated";
+import {
+    PanGestureHandler,
+    PanGestureHandlerGestureEvent,
+    TapGestureHandler,
+    TapGestureHandlerGestureEvent
+} from "react-native-gesture-handler";
+import Animated, {
+    Easing,
+    useAnimatedGestureHandler,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring,
+    withTiming
+} from "react-native-reanimated";
 import {MAIN_COLOR} from "../constants/colors";
 
 enum Direction {
@@ -43,11 +55,22 @@ export default function MovingVolumeIndicator(): ReactElement {
     const [startPointX, setStartPointX] = useState<number>(0);
     const [startPointY, setStartPointY] = useState<number>(0);
 
+    const scale = useSharedValue<number>(1);
     const offsetX = useSharedValue<number>(0);
     const offsetY = useSharedValue<number>(0);
 
-    const gesture = Gesture.Pan()
-        .onUpdate(event => {
+    const scaleGestureHandler = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
+        onStart: () => {
+            scale.value = withTiming(.9, {
+                duration: 100,
+            });
+        },
+        onEnd: () => {
+            scale.value = withSpring(1);
+        },
+    });
+    const panGestureHandler = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
+        onActive: event => {
             offsetX.value = interpolateValue(
                 event.translationX,
                 startPointX,
@@ -60,34 +83,41 @@ export default function MovingVolumeIndicator(): ReactElement {
                 startPointY,
                 Direction.VERTICAL,
             );
-        })
-        .onEnd(() => {
+        },
+        onEnd: () => {
+            scale.value = withSpring(1);
             offsetX.value = withSpring(0, {});
             offsetY.value = withSpring(0, {});
-        });
+        }
+    });
 
     const animatedStyles = useAnimatedStyle(() => {
         return {
             transform: [
                 {translateX: offsetX.value},
                 {translateY: offsetY.value},
+                {scale: scale.value},
             ],
         };
     });
 
     return (
-        <GestureDetector gesture={gesture}>
-            <Animated.View
-                style={[baseStyles.wrapper, animatedStyles]}
-                onLayout={event => {
-                    const {x, y} = event.nativeEvent.layout;
+        <TapGestureHandler onGestureEvent={scaleGestureHandler}>
+            <Animated.View>
+                <PanGestureHandler onGestureEvent={panGestureHandler}>
+                    <Animated.View
+                        style={[baseStyles.wrapper, animatedStyles]}
+                        onLayout={event => {
+                            const {x, y} = event.nativeEvent.layout;
 
-                    setStartPointX(x);
-                    setStartPointY(y);
-                }}
-            />
-        </GestureDetector>
-    )
+                            setStartPointX(x);
+                            setStartPointY(y);
+                        }}
+                    />
+                </PanGestureHandler>
+            </Animated.View>
+        </TapGestureHandler>
+    );
 }
 
 const baseStyles = StyleSheet.create({
