@@ -52,6 +52,7 @@ const baseStyles = StyleSheet.create({
     },
     valueCaption: {
         fontSize: 20,
+        marginLeft: 4,
     },
     subTitle: {
         fontSize: 14,
