@@ -32,6 +32,7 @@ const baseStyles = StyleSheet.create({
     container: {
         flexDirection: "row",
         justifyContent: "space-between",
+        paddingHorizontal: 20,
     },
     mainContainer: {
         flexDirection: "row",

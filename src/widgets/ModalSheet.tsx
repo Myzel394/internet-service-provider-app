@@ -1,15 +1,17 @@
 import BottomSheet, {BottomSheetProps} from "@gorhom/bottom-sheet";
-import React, {ReactElement, ReactNode} from "react";
-import {StyleSheet, View} from "react-native";
+import React, {ReactElement, ReactNode, Ref} from "react";
+import {SafeAreaView, StyleSheet} from "react-native";
 import useSelectThemeStylesheet from "../hooks/use-select-theme-stylesheet";
 
 export interface ModalSheetProps extends Omit<BottomSheetProps, "handleStyle" | "handleIndicatorStyle" | "children"> {
     children: ReactNode;
+    innerRef: Ref<BottomSheet> | undefined;
 }
 
 export default function ModalSheet({
                                        children,
                                        backgroundComponent = null,
+                                       innerRef,
                                        ...props
                                    }: ModalSheetProps): ReactElement {
     const styles = useSelectThemeStylesheet(lightStyles, darkStyles);
@@ -17,13 +19,14 @@ export default function ModalSheet({
     return (
         <BottomSheet
             {...props}
+            ref={innerRef}
             backgroundComponent={backgroundComponent}
             handleStyle={[baseStyles.handleWrapper, styles.container]}
             handleIndicatorStyle={[baseStyles.handle, styles.handle]}
         >
-            <View style={[baseStyles.container, styles.container]}>
+            <SafeAreaView style={[baseStyles.container, styles.container]}>
                 {children}
-            </View>
+            </SafeAreaView>
         </BottomSheet>
     )
 }

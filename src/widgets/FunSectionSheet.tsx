@@ -1,8 +1,8 @@
 import BlurView from "expo-blur/build/BlurView";
-import React, {ReactElement, useEffect, useState} from "react";
+import React, {ReactElement, useEffect, useState, useRef} from "react";
 import ModalSheet from "./ModalSheet";
 import Title from "./Title";
-import {Dimensions, StyleSheet, View} from "react-native";
+import {Dimensions, StyleSheet, View, TouchableWithoutFeedback, Platform} from "react-native";
 import SecondaryText from "./SecondaryText";
 import {LineChart} from "react-native-chart-kit";
 import {MAIN_COLOR} from "../constants/colors";
@@ -11,7 +11,7 @@ import RemainingVolume from "./RemainingVolume";
 import PriceText from "./PriceText";
 import BuyButton from "./BuyButton";
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
-import {useBottomSheetTimingConfigs} from "@gorhom/bottom-sheet";
+import BottomSheet, {useBottomSheetTimingConfigs} from "@gorhom/bottom-sheet";
 
 export interface FunSelectionSheetProps {
     onClose: () => void;
@@ -23,6 +23,7 @@ const SNAP_POINTS = ["80%"];
 const {width: DIMENSION_WIDTH} = Dimensions.get("window");
 
 export default function FunSectionSheet({visible, onClose}: FunSelectionSheetProps): ReactElement {
+    const $modal = useRef<BottomSheet>();
     const [isOpening, setIsOpening] = useState<boolean>(false);
 
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
@@ -44,17 +45,20 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
 
     useEffect(() => {
         if (visible) {
+            $modal.current?.expand();
             translationX.value = withTiming(0, {
                 duration: 1200,
                 easing: Easing.bezierFn(.19, .77, .13, .95),
             });
         } else {
+            $modal.current?.close();
             translationX.value = -DIMENSION_WIDTH;
         }
     }, [visible]);
 
     return (
         <ModalSheet
+            innerRef={$modal as any}
             animationConfigs={animationConfigs}
             onAnimate={(_, toIndex) => {
                 if (toIndex == 0) {
@@ -66,11 +70,14 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
             snapPoints={SNAP_POINTS}
             index={visible ? 0 : -1}
             backdropComponent={() =>
-                visible ? <BlurView
-                    style={{flex: 1, position: "absolute", width: "100%", height: "100%"}}
-                    intensity={20}
-                    tint="dark"
-                /> : null
+                visible ?
+                    <TouchableWithoutFeedback onPress={onClose}>
+                        <BlurView
+                            style={{flex: 1, position: "absolute", width: "100%", height: "100%"}}
+                            intensity={20}
+                            tint="dark"
+                        />
+                    </TouchableWithoutFeedback> : null
             }
             onClose={onClose}
             enablePanDownToClose
@@ -139,9 +146,10 @@ const baseStyles = StyleSheet.create({
     wrapper: {
         flex: 1,
         justifyContent: "space-between",
+        paddingBottom: Platform.OS == "ios" ? 20 : 10,
     },
     content: {
-        paddingHorizontal: 16,
+        paddingHorizontal: Platform.OS == "ios" ? 24 : 16,
     },
     actions: {
         flexDirection: "row",
