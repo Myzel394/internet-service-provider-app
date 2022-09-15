@@ -1,8 +1,8 @@
 import BlurView from "expo-blur/build/BlurView";
-import React, {ReactElement, useEffect, useState, useRef} from "react";
+import React, {ReactElement, useEffect, useRef, useState} from "react";
 import ModalSheet from "./ModalSheet";
 import Title from "./Title";
-import {Dimensions, StyleSheet, View, TouchableWithoutFeedback, Platform} from "react-native";
+import {Dimensions, Platform, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 import SecondaryText from "./SecondaryText";
 import {LineChart} from "react-native-chart-kit";
 import {MAIN_COLOR} from "../constants/colors";
@@ -10,7 +10,7 @@ import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
 import RemainingVolume from "./RemainingVolume";
 import PriceText from "./PriceText";
 import BuyButton from "./BuyButton";
-import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
+import {Easing} from "react-native-reanimated";
 import BottomSheet, {useBottomSheetTimingConfigs} from "@gorhom/bottom-sheet";
 
 export interface FunSelectionSheetProps {
@@ -20,39 +20,24 @@ export interface FunSelectionSheetProps {
 }
 
 const SNAP_POINTS = ["80%"];
-const {width: DIMENSION_WIDTH} = Dimensions.get("window");
 
 export default function FunSectionSheet({visible, onClose}: FunSelectionSheetProps): ReactElement {
     const $modal = useRef<BottomSheet>();
     const [isOpening, setIsOpening] = useState<boolean>(false);
 
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
-    const animationConfigs = useBottomSheetTimingConfigs(!isOpening ? {
+    const animationConfigs = useBottomSheetTimingConfigs(isOpening ? {
+        duration: 300,
+    } : {
         duration: 800,
         easing: Easing.bezierFn(.19, .77, .13, .95),
-    } : {
-        duration: 300,
     });
-
-    const translationX = useSharedValue<number>(-DIMENSION_WIDTH);
-    const moveInStyle = useAnimatedStyle(() => ({
-        transform: [
-            {
-                translateX: translationX.value,
-            },
-        ],
-    }));
 
     useEffect(() => {
         if (visible) {
             $modal.current?.expand();
-            translationX.value = withTiming(0, {
-                duration: 1200,
-                easing: Easing.bezierFn(.19, .77, .13, .95),
-            });
         } else {
             $modal.current?.close();
-            translationX.value = -DIMENSION_WIDTH;
         }
     }, [visible]);
 
@@ -84,9 +69,7 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
         >
             <View style={baseStyles.wrapper}>
                 <View style={baseStyles.content}>
-                    <Animated.View style={moveInStyle}>
-                        <RemainingVolume/>
-                    </Animated.View>
+                    <RemainingVolume visible={isOpening}/>
                     <View style={baseStyles.information}>
                         <Title title="Information"/>
                         <SecondaryText
@@ -134,7 +117,7 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
                 <View style={[baseStyles.content, baseStyles.actions]}>
                     <PriceText/>
                     <View style={baseStyles.buyButton}>
-                        <BuyButton/>
+                        <BuyButton visible={isOpening}/>
                     </View>
                 </View>
             </View>
@@ -159,6 +142,7 @@ const baseStyles = StyleSheet.create({
     buyButton: {
         flex: 1,
         marginLeft: 20,
+        justifyContent: "center",
     },
     information: {
         marginTop: 16,

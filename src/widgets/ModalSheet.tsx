@@ -5,7 +5,7 @@ import useSelectThemeStylesheet from "../hooks/use-select-theme-stylesheet";
 
 export interface ModalSheetProps extends Omit<BottomSheetProps, "handleStyle" | "handleIndicatorStyle" | "children"> {
     children: ReactNode;
-    innerRef: Ref<BottomSheet> | undefined;
+    innerRef?: Ref<BottomSheet> | undefined;
 }
 
 export default function ModalSheet({

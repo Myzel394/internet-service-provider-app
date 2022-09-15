@@ -1,14 +1,50 @@
-import {ReactElement} from "react";
-import {StyleSheet, Text, View} from "react-native";
+import {ReactElement, useEffect} from "react";
+import {Dimensions, StyleSheet, Text, View} from "react-native";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
 import {MAIN_COLOR} from "../constants/colors";
 import MovingVolumeIndicator from "./MovingVolumeIndicator";
+import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
+import {
+    MODAL_ANIMATION_IN_BEZIER,
+    MODAL_ANIMATION_IN_DURATION,
+    MODAL_ANIMATION_OUT_BEZIER,
+    MODAL_ANIMATION_OUT_DURATION
+} from "../constants/values";
 
-export default function RemainingVolume(): ReactElement {
+export interface RemainingVolumeProps {
+    visible?: boolean;
+}
+
+const {width: DIMENSION_WIDTH} = Dimensions.get("window");
+
+export default function RemainingVolume({visible = false}: RemainingVolumeProps): ReactElement {
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
 
+    const translationX = useSharedValue<number>(-DIMENSION_WIDTH);
+    const moveInStyle = useAnimatedStyle(() => ({
+        transform: [
+            {
+                translateX: translationX.value,
+            },
+        ],
+    }));
+
+    useEffect(() => {
+        if (visible) {
+            translationX.value = withTiming(0, {
+                duration: MODAL_ANIMATION_IN_DURATION,
+                easing: MODAL_ANIMATION_IN_BEZIER,
+            });
+        } else {
+            translationX.value = withTiming(-DIMENSION_WIDTH, {
+                duration: MODAL_ANIMATION_OUT_DURATION,
+                easing: MODAL_ANIMATION_OUT_BEZIER,
+            });
+        }
+    }, [visible]);
+
     return (
-        <View style={[baseStyles.wrapper, styles.wrapper]}>
+        <Animated.View style={[moveInStyle, baseStyles.wrapper, styles.wrapper]}>
             <View style={baseStyles.movingWrapper}>
                 <MovingVolumeIndicator/>
             </View>
@@ -28,7 +64,7 @@ export default function RemainingVolume(): ReactElement {
                     $349,55
                 </Text>
             </View>
-        </View>
+        </Animated.View>
     )
 }
 
