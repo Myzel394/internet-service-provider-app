@@ -3,7 +3,6 @@ import React, {ReactElement, useEffect, useRef, useState} from "react";
 import ModalSheet from "./ModalSheet";
 import Title from "./Title";
 import {Dimensions, Platform, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
-import SecondaryText from "./SecondaryText";
 import {LineChart} from "react-native-chart-kit";
 import {MAIN_COLOR} from "../constants/colors";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
@@ -12,6 +11,7 @@ import PriceText from "./PriceText";
 import BuyButton from "./BuyButton";
 import {Easing} from "react-native-reanimated";
 import BottomSheet, {useBottomSheetTimingConfigs} from "@gorhom/bottom-sheet";
+import ModalDescriptionText from "./ModalDescriptionText";
 
 export interface FunSelectionSheetProps {
     onClose: () => void;
@@ -72,8 +72,7 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
                     <RemainingVolume visible={isOpening}/>
                     <View style={baseStyles.information}>
                         <Title title="Information"/>
-                        <SecondaryText
-                            text="A package for those of you who like to play social media. It also includes a special gift from us, so what are you wa..."/>
+                        <ModalDescriptionText visible={visible}/>
                     </View>
                 </View>
                 <LineChart
