@@ -27,11 +27,11 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
     const [isOpening, setIsOpening] = useState<boolean>(false);
 
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
-    const animationConfigs = useBottomSheetTimingConfigs(isOpening ? {
+    const animationConfigs = useBottomSheetTimingConfigs(!isOpening ? {
         duration: 800,
         easing: Easing.bezierFn(.19, .77, .13, .95),
     } : {
-        duration: 150,
+        duration: 300,
     });
 
     const translationX = useSharedValue<number>(-DIMENSION_WIDTH);
