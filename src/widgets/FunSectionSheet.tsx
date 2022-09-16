@@ -56,7 +56,7 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
                     <TouchableWithoutFeedback onPress={onClose}>
                         <BlurView
                             style={{flex: 1, position: "absolute", width: "100%", height: "100%"}}
-                            intensity={20}
+                            intensity={Platform.OS == "ios" ? 20 : 80}
                             tint="dark"
                         />
                     </TouchableWithoutFeedback> : null
