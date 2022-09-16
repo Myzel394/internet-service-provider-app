@@ -2,14 +2,7 @@ import {ReactElement} from "react";
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
 import {MAIN_COLOR} from "../constants/colors";
-import Animated, {
-    Easing,
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring,
-    withTiming
-} from "react-native-reanimated";
+import Animated, {Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming} from "react-native-reanimated";
 
 export interface IconButtonProps {
     buildIcon: (props: any) => ReactElement;
@@ -38,7 +31,8 @@ export default function IconButton({buildIcon, onPress, subTitle, active = false
                     scale.value = withTiming(.87, {
                         duration: 300,
                         easing: Easing.out(Easing.ease),
-                    }, () => runOnJS(onPress)());
+                    });
+                    onPress();
                 }}
                 onPressOut={() => {
                     scale.value = withSpring(1);

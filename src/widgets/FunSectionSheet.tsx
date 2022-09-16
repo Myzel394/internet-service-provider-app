@@ -2,16 +2,14 @@ import BlurView from "expo-blur/build/BlurView";
 import React, {ReactElement, useEffect, useRef, useState} from "react";
 import ModalSheet from "./ModalSheet";
 import Title from "./Title";
-import {Dimensions, Platform, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
-import {LineChart} from "react-native-chart-kit";
-import {MAIN_COLOR} from "../constants/colors";
-import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
+import {Platform, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 import RemainingVolume from "./RemainingVolume";
 import PriceText from "./PriceText";
 import BuyButton from "./BuyButton";
 import {Easing} from "react-native-reanimated";
 import BottomSheet, {useBottomSheetTimingConfigs} from "@gorhom/bottom-sheet";
 import ModalDescriptionText from "./ModalDescriptionText";
+import DataChart from "./DataChart";
 
 export interface FunSelectionSheetProps {
     onClose: () => void;
@@ -25,7 +23,6 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
     const $modal = useRef<BottomSheet>();
     const [isOpening, setIsOpening] = useState<boolean>(false);
 
-    const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
     const animationConfigs = useBottomSheetTimingConfigs(isOpening ? {
         duration: 300,
     } : {
@@ -75,44 +72,11 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
                         <ModalDescriptionText visible={visible}/>
                     </View>
                 </View>
-                <LineChart
-                    style={{margin: 0, padding: 0, width: "100%"}}
-                    data={{
-                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                        datasets: [
-                            {
-                                data: [
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                ]
-                            }
-                        ]
-                    }}
-                    width={Dimensions.get("window").width * 1.5}
-                    height={200}
-                    chartConfig={{
-                        color: (_) => MAIN_COLOR,
-                        fillShadowGradientFrom: MAIN_COLOR,
-                        fillShadowGradientTo: MAIN_COLOR,
-                        fillShadowGradientToOpacity: 0,
-                        fillShadowGradientOpacity: .2,
-                        labelColor: _ => (styles.chart as any).color as string,
-                        strokeWidth: 2,
-                    }}
-                    yLabelsOffset={0}
-                    yAxisLabel=""
-                    formatYLabel={() => ""}
-                    withDots={false}
-                    withHorizontalLabels={false}
-                    withOuterLines={false}
-                    withInnerLines={false}
-                    transparent
-                    bezier
-                />
+                <View style={{
+                    marginLeft: -62
+                }}>
+                    <DataChart visible={visible}/>
+                </View>
                 <View style={[baseStyles.content, baseStyles.actions]}>
                     <PriceText/>
                     <View style={baseStyles.buyButton}>
@@ -148,16 +112,3 @@ const baseStyles = StyleSheet.create({
     }
 });
 
-const lightStyles = StyleSheet.create({
-    chart: {
-        backgroundColor: "#fff",
-        color: "#888",
-    }
-});
-
-const darkStyles = StyleSheet.create({
-    chart: {
-        backgroundColor: "#303030",
-        color: "#5A5A5A",
-    }
-});
