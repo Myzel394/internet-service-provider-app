@@ -1,31 +1,59 @@
 import {ReactElement} from "react";
-import {StyleSheet, Text, TouchableHighlight, View} from "react-native";
+import {StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
 import {MAIN_COLOR} from "../constants/colors";
+import Animated, {
+    Easing,
+    runOnJS,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring,
+    withTiming
+} from "react-native-reanimated";
 
 export interface IconButtonProps {
     buildIcon: (props: any) => ReactElement;
     onPress: () => void;
 
     subTitle?: string;
+    active?: boolean;
 }
 
-export default function IconButton({buildIcon, onPress, subTitle}: IconButtonProps): ReactElement {
+export default function IconButton({buildIcon, onPress, subTitle, active = false}: IconButtonProps): ReactElement {
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
+
+    const scale = useSharedValue<number>(1);
+    const scaleStyle = useAnimatedStyle(() => ({
+        transform: [
+            {
+                scale: scale.value,
+            },
+        ],
+    }));
 
     return (
         <View style={baseStyles.wrapper}>
-            <TouchableHighlight
-                underlayColor={baseStyles.active.backgroundColor}
-                onPress={onPress}
-                style={[baseStyles.icon, styles.icon]}
+            <TouchableWithoutFeedback
+                onPressIn={() => {
+                    scale.value = withTiming(.87, {
+                        duration: 300,
+                        easing: Easing.out(Easing.ease),
+                    }, () => runOnJS(onPress)());
+                }}
+                onPressOut={() => {
+                    scale.value = withSpring(1);
+                }}
             >
-                {buildIcon({
-                    // @ts-ignore
-                    color: styles.icon.color,
-                    size: 24,
-                })}
-            </TouchableHighlight>
+                <Animated.View
+                    style={[baseStyles.icon, styles.icon, active && baseStyles.active, scaleStyle]}
+                >
+                    {buildIcon({
+                        // @ts-ignore
+                        color: styles.icon.color,
+                        size: 24,
+                    })}
+                </Animated.View>
+            </TouchableWithoutFeedback>
             {subTitle && <Text style={[baseStyles.subTitle, styles.subTitle]}>{subTitle}</Text>}
         </View>
     );

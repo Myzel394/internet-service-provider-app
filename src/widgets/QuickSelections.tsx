@@ -11,6 +11,7 @@ export default function QuickSelections({onFunSectionPress}: any): ReactElement 
                     buildIcon={props => <MaterialIcons {...props} name="wifi"/>}
                     subTitle="Internet"
                     onPress={() => null}
+                    active
                 />
             </View>
             <View style={baseStyles.item}>
