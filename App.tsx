@@ -8,22 +8,26 @@ import SettingsSheet from "./src/widgets/SettingsSheet";
 import BalanceCard from "./src/widgets/BalanceCard";
 import {useState} from 'react';
 import FunSectionSheet from "./src/widgets/FunSectionSheet";
+import GlobalValuesContext, {GlobalValuesInterface, initialData} from './src/context/global-values';
 
 export default function App() {
+    const [globalValues, setGlobalValues] = useState<GlobalValuesInterface>(initialData)
     const [showFunSheet, setShowFunSheet] = useState<boolean>(false);
 
     return (
-        <GestureHandlerRootView>
-            <AppBody>
-                <View style={{height: 40}}/>
-                <ProfileInformation/>
-                <View style={{width: "80%", alignSelf: "center", marginVertical: 32}}>
-                    <BalanceCard/>
-                </View>
-                <QuickSelections onFunSectionPress={() => setShowFunSheet(true)}/>
-                <SettingsSheet/>
-            </AppBody>
-            <FunSectionSheet visible={showFunSheet} onClose={() => setShowFunSheet(false)}/>
-        </GestureHandlerRootView>
+        <GlobalValuesContext.Provider value={globalValues}>
+            <GestureHandlerRootView>
+                <AppBody>
+                    <View style={{height: 40}}/>
+                    <ProfileInformation/>
+                    <View style={{width: "80%", alignSelf: "center", marginVertical: 32}}>
+                        <BalanceCard/>
+                    </View>
+                    <QuickSelections onFunSectionPress={() => setShowFunSheet(true)}/>
+                    <SettingsSheet/>
+                </AppBody>
+                <FunSectionSheet visible={showFunSheet} onClose={() => setShowFunSheet(false)}/>
+            </GestureHandlerRootView>
+        </GlobalValuesContext.Provider>
     );
 }

@@ -1,8 +1,12 @@
 import {LinearGradient} from "expo-linear-gradient";
-import React from "react";
-import {StyleSheet, Text, View} from "react-native";
+import React, {useContext} from "react";
+import AnimateNumber from "react-native-countup";
+import GlobalValuesContext from "../context/global-values";
+import {StyleSheet, Text, View} from "react-native"
 
 export default function BalanceCard() {
+    const globalValues = useContext(GlobalValuesContext);
+
     return (
         <View style={baseStyles.wrapper}>
             <LinearGradient
@@ -37,7 +41,12 @@ export default function BalanceCard() {
                     Balance
                 </Text>
                 <Text style={baseStyles.title}>
-                    $1.924,3
+                    <AnimateNumber
+                        interval={7}
+                        timing="easeOut"
+                        value={globalValues.balance}
+                        formatter={(value: number) => value.toFixed(1)}
+                    />
                 </Text>
             </View>
         </View>

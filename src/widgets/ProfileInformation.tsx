@@ -1,12 +1,15 @@
-import {ReactElement} from "react";
+import {ReactElement, useContext} from "react";
 import {StyleSheet, View} from "react-native";
 import Picture from "./Picture";
 import Title from "./Title";
 import InformationText from "./InformationText";
 import IconButton from "./IconButton";
 import {MaterialIcons} from "@expo/vector-icons";
+import GlobalValuesContext from "../context/global-values";
 
 export default function ProfileInformation(): ReactElement {
+    const globalValues = useContext(GlobalValuesContext);
+
     return (
         <View style={baseStyles.container}>
             <View style={baseStyles.mainContainer}>
@@ -15,9 +18,9 @@ export default function ProfileInformation(): ReactElement {
                 </View>
                 <View style={baseStyles.rawInformation}>
                     <View style={baseStyles.title}>
-                        <Title title="Hi, Jenny"/>
+                        <Title title={`Hi, ${globalValues.name}`}/>
                     </View>
-                    <InformationText text={"+01 804 2309 8672"}/>
+                    <InformationText text={globalValues.phoneNumber}/>
                 </View>
             </View>
             <IconButton
