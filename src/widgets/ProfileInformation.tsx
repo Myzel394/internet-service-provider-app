@@ -7,7 +7,7 @@ import IconButton from "./IconButton";
 import {MaterialIcons} from "@expo/vector-icons";
 import GlobalValuesContext from "../context/global-values";
 
-export default function ProfileInformation(): ReactElement {
+export default function ProfileInformation({onSettingsPress}: any): ReactElement {
     const globalValues = useContext(GlobalValuesContext);
 
     return (
@@ -25,7 +25,7 @@ export default function ProfileInformation(): ReactElement {
             </View>
             <IconButton
                 buildIcon={props => <MaterialIcons {...props} name="settings"/>}
-                onPress={() => null}
+                onPress={onSettingsPress}
             />
         </View>
     );

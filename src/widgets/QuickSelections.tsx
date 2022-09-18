@@ -3,7 +3,7 @@ import {StyleSheet, View} from "react-native";
 import IconButton from "./IconButton";
 import {AntDesign, FontAwesome5, MaterialIcons} from "@expo/vector-icons";
 
-export default function QuickSelections({onFunSectionPress}: any): ReactElement {
+export default function QuickSelections({onFunSectionPress, onSettingsPress}: any): ReactElement {
     return (
         <View style={baseStyles.container}>
             <View style={baseStyles.item}>
