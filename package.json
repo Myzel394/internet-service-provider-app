@@ -33,13 +33,15 @@
     "react-native-gesture-handler": "~2.5.0",
     "react-native-reanimated": "~2.9.1",
     "react-native-svg": "12.3.0",
-    "react-native-web": "~0.18.7"
+    "react-native-web": "~0.18.7",
+    "tinycolor2": "^1.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@types/react": "^18.0.19",
     "@types/react-dom": "^18.0.6",
     "@types/react-native": "^0.69.8",
+    "@types/tinycolor2": "^1.4.3",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
     "eslint": "8.22.0",

@@ -3,8 +3,9 @@ import {LineChart} from "react-native-chart-kit";
 import {Dimensions, StyleSheet, View} from "react-native";
 import {MAIN_COLOR} from "../constants/colors";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
-import Animated, {Easing, useAnimatedStyle, useSharedValue, withDelay, withTiming} from "react-native-reanimated";
+import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
 import {LinearGradient} from "expo-linear-gradient";
+import tinycolor from "tinycolor2";
 import {
     MODAL_ANIMATION_IN_DURATION,
     MODAL_ANIMATION_OUT_BEZIER,
@@ -20,7 +21,7 @@ const {width: DIMENSION_WIDTH} = Dimensions.get("window");
 export default function DataChart({visible = false}: DataChartProps): ReactElement {
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
 
-    const translationX = useSharedValue<number>(0);
+    const translationX = useSharedValue<number>(-DIMENSION_WIDTH * .5);
     const moveStyle = useAnimatedStyle(() => ({
         transform: [
             {
@@ -31,15 +32,13 @@ export default function DataChart({visible = false}: DataChartProps): ReactEleme
 
     useEffect(() => {
         if (visible) {
-            translationX.value = withDelay(
-                50,
-                withTiming(DIMENSION_WIDTH * 1.1, {
+            translationX.value =
+                withTiming(DIMENSION_WIDTH, {
                     duration: MODAL_ANIMATION_IN_DURATION,
                     easing: Easing.linear,
-                }),
-            );
+                });
         } else {
-            translationX.value = withTiming(0, {
+            translationX.value = withTiming(-DIMENSION_WIDTH * .5, {
                 duration: MODAL_ANIMATION_OUT_DURATION,
                 easing: MODAL_ANIMATION_OUT_BEZIER,
             });
@@ -90,12 +89,16 @@ export default function DataChart({visible = false}: DataChartProps): ReactEleme
                 <LinearGradient
                     style={baseStyles.overlayGradient}
                     colors={[
-                        "transparent",
-                        ...Array(10).fill(styles.overlay.backgroundColor as string)
+                        tinycolor(styles.overlay.backgroundColor as string).setAlpha(0).toRgbString(),
+                    ...Array(10).fill(styles.overlay.backgroundColor as string),
                     ]}
+                    start={{
+                        x: 0,
+                        y: 1,
+                    }}
                     end={{
                         x: 1,
-                        y: .5,
+                        y: 1,
                     }}
                 />
             </Animated.View>
@@ -108,7 +111,7 @@ const baseStyles = StyleSheet.create({
         width: "100%",
     },
     overlay: {
-        width: DIMENSION_WIDTH * 1.1,
+        width: DIMENSION_WIDTH * 2,
         height: "100%",
         position: "absolute",
         left: 62,

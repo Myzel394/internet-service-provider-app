@@ -34,6 +34,7 @@ export default function UpdateGlobalValues({visible, onClose}: UpdateGlobalValue
             snapPoints={SNAP_POINTS}
             index={visible ? 0 : -1}
             onClose={onClose}
+            enablePanDownToClose
         >
             <View style={{width: "90%", alignSelf: "center", marginTop: 20}}>
                 <TextField
