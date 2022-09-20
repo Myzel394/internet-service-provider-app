@@ -26,6 +26,7 @@ export default function ModalSheet({
             index={index}
             ref={innerRef}
             onClose={onClose}
+            backgroundComponent={backgroundComponent}
             backdropComponent={backdropComponent ?? (() => index === -1 ? null :
                 <TouchableWithoutFeedback onPress={onClose}>
                     <BlurView
