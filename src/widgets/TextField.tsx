@@ -1,4 +1,4 @@
-import {StyleSheet, TextInput, TextInputProps, View} from "react-native";
+import {Platform, StyleSheet, TextInput, TextInputProps, View} from "react-native";
 import {ReactElement} from "react";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
 
@@ -11,7 +11,7 @@ export default function TextField({children, buildPrefixIcon, style, ...other}: 
 
     return (
         <View style={baseStyles.wrapper}>
-            {buildPrefixIcon?.({size: 20, color: (styles.input as any).color})}
+            {buildPrefixIcon?.({size: 20, style: {alignSelf: "center"}, color: (styles.input as any).color})}
             <TextInput {...other} style={[baseStyles.input, styles.input, style]}/>
         </View>
     );
@@ -25,7 +25,7 @@ const baseStyles = StyleSheet.create({
     },
     input: {
         paddingHorizontal: 16,
-        paddingVertical: 10,
+        paddingVertical: Platform.OS === "ios" ? 20 : 10,
         borderRadius: 15,
         borderWidth: 1,
         flexGrow: 1,
