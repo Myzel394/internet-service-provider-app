@@ -1,11 +1,10 @@
-import BlurView from "expo-blur/build/BlurView";
 import React, {ReactElement, useEffect, useRef, useState} from "react";
 import ModalSheet from "./ModalSheet";
 import Title from "./Title";
-import {Platform, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
+import {Platform, StyleSheet, View} from "react-native";
 import RemainingVolume from "./RemainingVolume";
 import PriceText from "./PriceText";
-import BuyButton from "./BuyButton";
+import BigModalButton from "./BigModalButton";
 import {Easing} from "react-native-reanimated";
 import BottomSheet, {useBottomSheetTimingConfigs} from "@gorhom/bottom-sheet";
 import ModalDescriptionText from "./ModalDescriptionText";
@@ -51,16 +50,6 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
             }}
             snapPoints={SNAP_POINTS}
             index={visible ? 0 : -1}
-            backdropComponent={() =>
-                visible ?
-                    <TouchableWithoutFeedback onPress={onClose}>
-                        <BlurView
-                            style={{flex: 1, position: "absolute", width: "100%", height: "100%"}}
-                            intensity={Platform.OS == "ios" ? 20 : 80}
-                            tint="dark"
-                        />
-                    </TouchableWithoutFeedback> : null
-            }
             onClose={onClose}
             enablePanDownToClose
         >
@@ -80,7 +69,7 @@ export default function FunSectionSheet({visible, onClose}: FunSelectionSheetPro
                 <View style={[baseStyles.content, baseStyles.actions]}>
                     <PriceText/>
                     <View style={baseStyles.buyButton}>
-                        <BuyButton visible={isOpening}/>
+                        <BigModalButton title="Buy" visible={isOpening}/>
                     </View>
                 </View>
             </View>

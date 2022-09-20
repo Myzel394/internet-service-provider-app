@@ -33,6 +33,7 @@ export default function App() {
                 <FunSectionSheet visible={showFunSheet} onClose={() => setShowFunSheet(false)}/>
                 <UpdateGlobalValues
                     visible={showUpdateGlobalValuesSheet}
+                    updateGlobalValues={setGlobalValues}
                     onClose={() => setShowUpdateGlobalValuesSheet(false)}
                 />
             </GestureHandlerRootView>

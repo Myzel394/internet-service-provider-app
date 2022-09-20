@@ -10,7 +10,7 @@ const SNAP_POINTS = ["45%"];
 
 export default function SettingsSheet(): ReactElement {
     return (
-        <ModalSheet snapPoints={SNAP_POINTS}>
+        <ModalSheet snapPoints={SNAP_POINTS} backdropComponent={() => null}>
             <View style={baseStyles.title}>
                 <Title title="Useful"/>
                 <Text style={baseStyles.selection}>

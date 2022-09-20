@@ -1,5 +1,5 @@
 import {ReactElement, useEffect} from "react";
-import {Dimensions, StyleSheet, Text} from "react-native";
+import {Dimensions, StyleSheet, Text, TouchableHighlight} from "react-native";
 import {MAIN_COLOR} from "../constants/colors";
 import Animated, {useAnimatedStyle, useSharedValue, withDelay, withTiming} from "react-native-reanimated";
 import {
@@ -8,14 +8,18 @@ import {
     MODAL_ANIMATION_OUT_BEZIER,
     MODAL_ANIMATION_OUT_DURATION
 } from "../constants/values";
+import tinycolor from "tinycolor2";
 
 export interface BuyButtonProps {
+    title: string;
+
+    onPress?: () => void;
     visible?: boolean;
 }
 
 const {height: DIMENSION_HEIGHT} = Dimensions.get("window");
 
-export default function BuyButton({visible = false}: BuyButtonProps): ReactElement {
+export default function BigModalButton({title, onPress, visible = false}: BuyButtonProps): ReactElement {
     const translationY = useSharedValue<number>(DIMENSION_HEIGHT * .2);
     const moveInStyle = useAnimatedStyle(() => ({
         transform: [
@@ -43,10 +47,16 @@ export default function BuyButton({visible = false}: BuyButtonProps): ReactEleme
     })
 
     return (
-        <Animated.View style={[baseStyles.wrapper, moveInStyle]}>
-            <Text style={baseStyles.text}>
-                Buy package
-            </Text>
+        <Animated.View style={moveInStyle}>
+            <TouchableHighlight
+                onPress={onPress}
+                underlayColor={tinycolor(baseStyles.wrapper.backgroundColor).darken(20).toString()}
+                style={baseStyles.wrapper}
+            >
+                <Text style={baseStyles.text}>
+                    {title}
+                </Text>
+            </TouchableHighlight>
         </Animated.View>
     )
 }

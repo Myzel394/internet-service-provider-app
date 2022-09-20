@@ -1,6 +1,7 @@
 import BottomSheet, {BottomSheetProps} from "@gorhom/bottom-sheet";
+import { BlurView } from "expo-blur";
 import React, {ReactElement, ReactNode, Ref} from "react";
-import {SafeAreaView, StyleSheet} from "react-native";
+import {Platform, SafeAreaView, StyleSheet, TouchableWithoutFeedback} from "react-native";
 import useSelectThemeStylesheet from "../hooks/use-select-theme-stylesheet";
 
 export interface ModalSheetProps extends Omit<BottomSheetProps, "handleStyle" | "handleIndicatorStyle" | "children"> {
@@ -9,9 +10,12 @@ export interface ModalSheetProps extends Omit<BottomSheetProps, "handleStyle" | 
 }
 
 export default function ModalSheet({
+                                       backdropComponent,
                                        children,
                                        backgroundComponent = null,
                                        innerRef,
+                                       onClose,
+                                       index,
                                        ...props
                                    }: ModalSheetProps): ReactElement {
     const styles = useSelectThemeStylesheet(lightStyles, darkStyles);
@@ -19,8 +23,18 @@ export default function ModalSheet({
     return (
         <BottomSheet
             {...props}
+            index={index}
             ref={innerRef}
-            backgroundComponent={backgroundComponent}
+            onClose={onClose}
+            backdropComponent={backdropComponent ?? (() => index === -1 ? null :
+                <TouchableWithoutFeedback onPress={onClose}>
+                    <BlurView
+                        style={{flex: 1, position: "absolute", width: "100%", height: "100%"}}
+                        intensity={Platform.OS == "ios" ? 20 : 80}
+                        tint="dark"
+                    />
+                </TouchableWithoutFeedback>
+            )}
             handleStyle={[baseStyles.handleWrapper, styles.container]}
             handleIndicatorStyle={[baseStyles.handle, styles.handle]}
         >

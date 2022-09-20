@@ -1,22 +1,28 @@
-import React, {ReactElement, useContext, useEffect, useRef, useState} from "react";
+import React, {Dispatch, ReactElement, SetStateAction, useContext, useEffect, useRef, useState} from "react";
+import {Text} from "react-native";
 import ModalSheet from "./ModalSheet";
 import BottomSheet from "@gorhom/bottom-sheet";
-import GlobalValuesContext from "../context/global-values";
+import GlobalValuesContext, { GlobalValuesInterface } from "../context/global-values";
 import {StyleSheet, View} from "react-native";
 import TextField from "./TextField";
 import {MaterialIcons, AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
+import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
+import BigModalButton from "./BigModalButton";
 
 export interface UpdateGlobalValuesSheetProps {
     onClose: () => void;
+    updateGlobalValues: Dispatch<SetStateAction<GlobalValuesInterface>>;
 
     visible?: boolean;
 }
 
-const SNAP_POINTS = ["80%"];
+const SNAP_POINTS = ["90%"];
 
-export default function UpdateGlobalValues({visible, onClose}: UpdateGlobalValuesSheetProps): ReactElement {
+export default function UpdateGlobalValues({visible, updateGlobalValues, onClose}: UpdateGlobalValuesSheetProps): ReactElement {
     const globalValues = useContext(GlobalValuesContext);
     const $modal = useRef<BottomSheet>();
+
+    const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
 
     const [name, setName] = useState<string>(globalValues.name);
     const [phoneNumber, setPhoneNumber] = useState<string>(globalValues.phoneNumber);
@@ -41,7 +47,10 @@ export default function UpdateGlobalValues({visible, onClose}: UpdateGlobalValue
             onClose={onClose}
             enablePanDownToClose
         >
-            <View style={{width: "90%", alignSelf: "center", marginTop: 20}}>
+            <View style={{width: "90%", alignSelf: "center", marginVertical: 20}}>
+                <Text style={[baseStyles.label, styles.label]}>
+                    Name
+                </Text>
                 <TextField
                     buildPrefixIcon={props => <MaterialIcons {...props} name="person"/>}
                     autoCapitalize="words"
@@ -51,53 +60,89 @@ export default function UpdateGlobalValues({visible, onClose}: UpdateGlobalValue
                     onChangeText={setName}
                     clearTextOnFocus
                 />
-                <View style={baseStyles.input} />
-                <TextField
-                    buildPrefixIcon={props => <MaterialCommunityIcons {...props} name="phone"/>}
-                    autoComplete="tel-device"
-                    keyboardType="phone-pad"
-                    value={phoneNumber}
-                    returnKeyType="next"
-                    onChangeText={setPhoneNumber}
-                    clearTextOnFocus
-                />
-                <View style={baseStyles.input} />
-                <TextField
-                    buildPrefixIcon={props => <MaterialCommunityIcons {...props} name="currency-usd"/>}
-                    value={balance.toString()}
-                    returnKeyType="next"
-                    keyboardType="number-pad"
-                    onChangeText={text => setBalance(Number(text))}
-                    clearTextOnFocus
-                />
-                <View style={baseStyles.input} />
-                <TextField
-                    buildPrefixIcon={props => <MaterialIcons {...props} name="wifi"/>}
-                    value={dataVolumeUsed.toString()}
-                    returnKeyType="next"
-                    keyboardType="number-pad"
-                    onChangeText={text => setDataVolumeUsed(Number(text))}
-                    clearTextOnFocus
-                />
-                <View style={baseStyles.input} />
-                <TextField
-                    buildPrefixIcon={props => <MaterialIcons {...props} name="data-usage"/>}
-                    value={dataVolumeAvailable.toString()}
-                    returnKeyType="next"
-                    keyboardType="number-pad"
-                    onChangeText={text => setDataVolumeAvailable(Number(text))}
-                    clearTextOnFocus
-                />
-                <View style={baseStyles.input} />
-                <TextField
-                    buildPrefixIcon={props => <AntDesign {...props} name="tag"/>}
-                    value={price.toString()}
-                    returnKeyType="next"
-                    keyboardType="number-pad"
-                    onChangeText={text => setPrice(Number(text))}
-                    clearTextOnFocus
-                />
+                <View style={baseStyles.input}>
+                    <Text style={[baseStyles.label, styles.label]}>
+                        Telephone Number
+                    </Text>
+                    <TextField
+                        buildPrefixIcon={props => <MaterialCommunityIcons {...props} name="phone"/>}
+                        autoComplete="tel-device"
+                        keyboardType="phone-pad"
+                        value={phoneNumber}
+                        returnKeyType="next"
+                        onChangeText={setPhoneNumber}
+                        clearTextOnFocus
+                    />
+                </View>
+                <View style={baseStyles.input}>
+                    <Text style={[baseStyles.label, styles.label]}>
+                        Balance
+                    </Text>
+                    <TextField
+                        buildPrefixIcon={props => <MaterialCommunityIcons {...props} name="currency-usd"/>}
+                        value={balance.toString()}
+                        returnKeyType="next"
+                        keyboardType="number-pad"
+                        onChangeText={text => setBalance(Number(text))}
+                        clearTextOnFocus
+                    />
+                </View>
+                <View style={baseStyles.input}>
+                    <Text style={[baseStyles.label, styles.label]}>
+                        Data Volume Used
+                    </Text>
+                    <TextField
+                        buildPrefixIcon={props => <MaterialIcons {...props} name="wifi"/>}
+                        value={dataVolumeUsed.toString()}
+                        returnKeyType="next"
+                        keyboardType="number-pad"
+                        onChangeText={text => setDataVolumeUsed(Number(text))}
+                        clearTextOnFocus
+                    />
+                </View>
+                <View style={baseStyles.input}>
+                    <Text style={[baseStyles.label, styles.label]}>
+                        Data Volume Available
+                    </Text>
+                    <TextField
+                        buildPrefixIcon={props => <MaterialIcons {...props} name="data-usage"/>}
+                        value={dataVolumeAvailable.toString()}
+                        returnKeyType="next"
+                        keyboardType="number-pad"
+                        onChangeText={text => setDataVolumeAvailable(Number(text))}
+                        clearTextOnFocus
+                    />
+                </View>
+                <View style={baseStyles.input}>
+                    <Text style={[baseStyles.label, styles.label]}>
+                        Price
+                    </Text>
+                    <TextField
+                        buildPrefixIcon={props => <AntDesign {...props} name="tag"/>}
+                        value={price.toString()}
+                        returnKeyType="next"
+                        keyboardType="number-pad"
+                        onChangeText={text => setPrice(Number(text))}
+                        clearTextOnFocus
+                    />
+                </View>
             </View>
+            <BigModalButton
+                title="Save"
+                onPress={() => {
+                    updateGlobalValues(previous => ({
+                        ...previous,
+                        name,
+                        phoneNumber,
+                        balance,
+                        dataVolumeUsed,
+                        dataVolumeAvailable,
+                        price,
+                    }));
+                    onClose();
+                }}
+                visible
+            />
         </ModalSheet>
     )
 }
@@ -105,5 +150,24 @@ export default function UpdateGlobalValues({visible, onClose}: UpdateGlobalValue
 const baseStyles = StyleSheet.create({
     input: {
         marginTop: 20,
-    }
-})
+    },
+    label: {
+        fontSize: 16,
+        fontWeight: "bold",
+        marginLeft: 16,
+        marginBottom: 12,
+    },
+});
+
+const lightStyles = StyleSheet.create({
+    label: {
+        color: "#222",
+    },
+});
+
+const darkStyles = StyleSheet.create({
+    label: {
+        color: "#fff",
+    },
+});
+
