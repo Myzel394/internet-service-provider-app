@@ -1,5 +1,5 @@
 import BottomSheet, {BottomSheetProps} from "@gorhom/bottom-sheet";
-import { BlurView } from "expo-blur";
+import {BlurView} from "expo-blur";
 import React, {ReactElement, ReactNode, Ref} from "react";
 import {Platform, SafeAreaView, StyleSheet, TouchableWithoutFeedback} from "react-native";
 import useSelectThemeStylesheet from "../hooks/use-select-theme-stylesheet";
@@ -25,16 +25,15 @@ export default function ModalSheet({
             {...props}
             index={index}
             ref={innerRef}
-            onClose={onClose}
             backgroundComponent={backgroundComponent}
             backdropComponent={backdropComponent ?? (() => index === -1 ? null :
-                <TouchableWithoutFeedback onPress={onClose}>
-                    <BlurView
-                        style={{flex: 1, position: "absolute", width: "100%", height: "100%"}}
-                        intensity={Platform.OS == "ios" ? 20 : 80}
-                        tint="dark"
-                    />
-                </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={onClose}>
+                        <BlurView
+                            style={StyleSheet.absoluteFill}
+                            intensity={Platform.OS == "ios" ? 20 : 80}
+                            tint="dark"
+                        />
+                    </TouchableWithoutFeedback>
             )}
             handleStyle={[baseStyles.handleWrapper, styles.container]}
             handleIndicatorStyle={[baseStyles.handle, styles.handle]}

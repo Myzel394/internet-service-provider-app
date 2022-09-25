@@ -1,4 +1,4 @@
-import {ReactElement, useEffect} from "react";
+import {ReactElement, useContext, useEffect} from "react";
 import {Dimensions, StyleSheet, Text, View} from "react-native";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
 import {MAIN_COLOR} from "../constants/colors";
@@ -10,6 +10,7 @@ import {
     MODAL_ANIMATION_OUT_BEZIER,
     MODAL_ANIMATION_OUT_DURATION
 } from "../constants/values";
+import GlobalValuesContext from "../context/global-values";
 
 export interface RemainingVolumeProps {
     visible?: boolean;
@@ -18,6 +19,7 @@ export interface RemainingVolumeProps {
 const {width: DIMENSION_WIDTH} = Dimensions.get("window");
 
 export default function RemainingVolume({visible = false}: RemainingVolumeProps): ReactElement {
+    const globalValues = useContext(GlobalValuesContext);
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
 
     const translationX = useSharedValue<number>(-DIMENSION_WIDTH);
@@ -54,7 +56,7 @@ export default function RemainingVolume({visible = false}: RemainingVolumeProps)
                 </Text>
                 <View style={baseStyles.value}>
                     <Text style={[baseStyles.valueText, styles.valueText]}>
-                        8GB
+                        {globalValues.dataVolumeUsed}GB
                     </Text>
                     <Text style={[baseStyles.valueCaption, styles.valueCaption]}>
                         /30 Days

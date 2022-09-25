@@ -1,13 +1,12 @@
 import React, {Dispatch, ReactElement, SetStateAction, useContext, useEffect, useRef, useState} from "react";
-import {Text} from "react-native";
-import ModalSheet from "./ModalSheet";
-import BottomSheet from "@gorhom/bottom-sheet";
-import GlobalValuesContext, { GlobalValuesInterface } from "../context/global-values";
-import {StyleSheet, View} from "react-native";
+import {Platform, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
+import {BottomSheetModal, BottomSheetScrollView, useBottomSheetDynamicSnapPoints} from "@gorhom/bottom-sheet";
+import GlobalValuesContext, {GlobalValuesInterface} from "../context/global-values";
 import TextField from "./TextField";
-import {MaterialIcons, AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
+import {AntDesign, MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons";
 import useSelectThemeStyleSheet from "../hooks/use-select-theme-stylesheet";
 import BigModalButton from "./BigModalButton";
+import {BlurView} from "expo-blur";
 
 export interface UpdateGlobalValuesSheetProps {
     onClose: () => void;
@@ -16,13 +15,24 @@ export interface UpdateGlobalValuesSheetProps {
     visible?: boolean;
 }
 
-const SNAP_POINTS = ["90%"];
+const SNAP_POINTS = ["CONTENT_HEIGHT"];
 
-export default function UpdateGlobalValues({visible, updateGlobalValues, onClose}: UpdateGlobalValuesSheetProps): ReactElement {
+export default function UpdateGlobalValues({
+                                               visible,
+                                               updateGlobalValues,
+                                               onClose
+                                           }: UpdateGlobalValuesSheetProps): ReactElement {
     const globalValues = useContext(GlobalValuesContext);
-    const $modal = useRef<BottomSheet>();
+    const $modal = useRef<BottomSheetModal>();
 
     const styles = useSelectThemeStyleSheet(lightStyles, darkStyles);
+
+    const {
+        animatedHandleHeight,
+        animatedSnapPoints,
+        handleContentLayout,
+        animatedContentHeight
+    } = useBottomSheetDynamicSnapPoints(SNAP_POINTS);
 
     const [name, setName] = useState<string>(globalValues.name);
     const [phoneNumber, setPhoneNumber] = useState<string>(globalValues.phoneNumber);
@@ -33,21 +43,38 @@ export default function UpdateGlobalValues({visible, updateGlobalValues, onClose
 
     useEffect(() => {
         if (visible) {
-            $modal.current?.expand();
+            $modal.current?.present();
         } else {
             $modal.current?.close();
         }
     }, [visible]);
 
     return (
-        <ModalSheet
-            innerRef={$modal as any}
-            snapPoints={SNAP_POINTS}
+        <BottomSheetModal
+            ref={$modal as any}
+            snapPoints={animatedSnapPoints}
             index={visible ? 0 : -1}
-            onClose={onClose}
+            contentHeight={animatedContentHeight}
+            handleHeight={animatedHandleHeight}
+            backgroundComponent={null}
+            backdropComponent={(() => visible ?
+                    <TouchableWithoutFeedback onPress={onClose}>
+                        <BlurView
+                            style={StyleSheet.absoluteFill}
+                            intensity={Platform.OS == "ios" ? 20 : 80}
+                            tint="dark"
+                        />
+                    </TouchableWithoutFeedback> : null
+            )}
+            handleStyle={[baseStyles.handleWrapper, styles.container]}
+            handleIndicatorStyle={[baseStyles.handle, styles.handle]}
+            style={styles.container}
             enablePanDownToClose
         >
-            <View style={{width: "90%", alignSelf: "center", marginVertical: 20}}>
+            <BottomSheetScrollView
+                onLayout={handleContentLayout}
+                contentContainerStyle={[baseStyles.wrapper, styles.container]}
+            >
                 <Text style={[baseStyles.label, styles.label]}>
                     Name
                 </Text>
@@ -126,24 +153,25 @@ export default function UpdateGlobalValues({visible, updateGlobalValues, onClose
                         clearTextOnFocus
                     />
                 </View>
-            </View>
-            <BigModalButton
-                title="Save"
-                onPress={() => {
-                    updateGlobalValues(previous => ({
-                        ...previous,
-                        name,
-                        phoneNumber,
-                        balance,
-                        dataVolumeUsed,
-                        dataVolumeAvailable,
-                        price,
-                    }));
-                    onClose();
-                }}
-                visible
-            />
-        </ModalSheet>
+                <View style={{height: 20}}/>
+                <BigModalButton
+                    title="Save"
+                    onPress={() => {
+                        updateGlobalValues(previous => ({
+                            ...previous,
+                            name,
+                            phoneNumber,
+                            balance,
+                            dataVolumeUsed,
+                            dataVolumeAvailable,
+                            price,
+                        }));
+                        onClose();
+                    }}
+                    visible
+                />
+            </BottomSheetScrollView>
+        </BottomSheetModal>
     )
 }
 
@@ -157,17 +185,45 @@ const baseStyles = StyleSheet.create({
         marginLeft: 16,
         marginBottom: 12,
     },
+    wrapper: {
+        width: "100%",
+        padding: 20,
+        flex: 1,
+    },
+    handle: {
+        width: 40,
+        height: 8,
+        alignSelf: "center",
+        borderRadius: 4,
+        marginVertical: 12,
+    },
+    handleWrapper: {
+        borderTopLeftRadius: 32,
+        borderTopRightRadius: 32,
+    },
 });
 
 const lightStyles = StyleSheet.create({
     label: {
         color: "#222",
     },
+    container: {
+        backgroundColor: "#EAEAEA",
+    },
+    handle: {
+        backgroundColor: "#FFFFFF",
+    }
 });
 
 const darkStyles = StyleSheet.create({
     label: {
         color: "#fff",
     },
+    container: {
+        backgroundColor: "#303030",
+    },
+    handle: {
+        backgroundColor: "#585858",
+    }
 });
 
